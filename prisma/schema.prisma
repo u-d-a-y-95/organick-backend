@@ -23,7 +23,7 @@ model User {
   mobile     String   @unique
   password   String
   role       ROLE     @default(CUSTOMER)
-  isVarified Boolean  @default(false)
+  isVerified Boolean  @default(false)
   createAt   DateTime @default(now())
   updateAt   DateTime @updatedAt
 }
