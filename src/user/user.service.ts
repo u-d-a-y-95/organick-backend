@@ -9,6 +9,14 @@ export class UserService {
     return this.dbService.user.findMany();
   }
 
+  getUserById(id: string) {
+    return this.dbService.user.findUnique({
+      where: {
+        id,
+      },
+    });
+  }
+
   createUser(data) {
     return this.dbService.user.create({ data });
   }
