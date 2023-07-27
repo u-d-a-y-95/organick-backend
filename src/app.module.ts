@@ -3,16 +3,21 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
-import { APP_PIPE } from '@nestjs/core';
+import { APP_FILTER, APP_PIPE } from '@nestjs/core';
 import { DbModule } from './db/db.module';
 import { UserModule } from './user/user.module';
 import { SmsModule } from './sms/sms.module';
+import { CacheModule } from '@nestjs/cache-manager';
+import { DbExceptionFilter } from './db/db.exception';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       cache: true,
+    }),
+    CacheModule.register({
+      isGlobal: true,
     }),
     DbModule,
     AuthModule,
@@ -25,6 +30,10 @@ import { SmsModule } from './sms/sms.module';
     {
       provide: APP_PIPE,
       useClass: ValidationPipe,
+    },
+    {
+      provide: APP_FILTER,
+      useClass: DbExceptionFilter,
     },
   ],
   exports: [],
