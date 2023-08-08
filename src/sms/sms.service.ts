@@ -1,5 +1,9 @@
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
-import { Inject, Injectable } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Cache } from 'cache-manager';
 import { SignupDto } from 'src/auth/dtos/signup.dto';
@@ -30,7 +34,6 @@ export class SmsService {
         ? this.configService.get<string>('SMS_DEMO_NUMBER')
         : data.mobile;
 
-    console.log(otpTtl, typeof otpTtl);
     await this.cacheManager.set(
       `otp-${data.mobile}`,
       {
@@ -64,7 +67,9 @@ export class SmsService {
       otp: string;
       data: SignupDto;
     }>(`otp-${mobile}`);
+    if (!cacheValue) throw new InternalServerErrorException();
     if (cacheValue.otp === otp) {
+      await this.cacheManager.del(`otp-${mobile}`);
       return {
         status: 200,
         data: cacheValue.data,
