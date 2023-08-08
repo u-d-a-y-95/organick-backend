@@ -16,7 +16,7 @@ export class BcryptService {
     return bcrypt.hash(value, saltNumber);
   }
 
-  async verifyHash(value, hashedValue): Promise<boolean> {
+  async verifyHash(value: string, hashedValue: string): Promise<boolean> {
     return bcrypt.compare(value, hashedValue);
   }
 }
