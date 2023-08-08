@@ -12,4 +12,9 @@ export class AuthController {
   sign(@Body() signupDto: SignupDto) {
     return this.authService.signup(signupDto);
   }
+
+  @Post('verify')
+  verify(@Body() signupDto: SignupDto) {
+    return this.authService.signup(signupDto);
+  }
 }

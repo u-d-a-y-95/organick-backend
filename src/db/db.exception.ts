@@ -23,6 +23,8 @@ export class DbExceptionFilter implements ExceptionFilter {
           409,
           `${meta['target'].join(' ')} is already exists`,
         );
+      case 'P2025':
+        return new CustomeError('404', 'Record to delete does not exist');
       default:
         return new CustomeError(500, 'prisma eror');
     }

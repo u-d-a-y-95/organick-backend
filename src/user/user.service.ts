@@ -1,4 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import {
+  HttpCode,
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { DbService } from 'src/db/db.service';
 
 @Injectable()
@@ -17,7 +23,23 @@ export class UserService {
     });
   }
 
+  getUserByMobileNumber(number: string) {
+    return this.dbService.user.findUnique({
+      where: {
+        mobile: number,
+      },
+    });
+  }
+
   createUser(data) {
     return this.dbService.user.create({ data });
+  }
+
+  deleteUser(id: string) {
+    return this.dbService.user.delete({
+      where: {
+        id,
+      },
+    });
   }
 }

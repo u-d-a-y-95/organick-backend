@@ -1,25 +1,37 @@
-import { Injectable } from '@nestjs/common';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { Cache } from 'cache-manager';
 import { Twilio } from 'twilio';
 
 @Injectable()
 export class SmsService {
-  constructor(private configService: ConfigService) {}
+  constructor(
+    private configService: ConfigService,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
+  ) {}
   getOtp(digit = 6): number {
     let otp = '';
     for (let i = 0; i < digit; i++) {
-      otp += String(Math.ceil(Math.random() * 10));
+      otp += String(Math.floor(Math.random() * 10));
     }
     return Number(otp);
   }
 
-  sendOtp(data) {
+  async sendOtp(data) {
     const otp = this.getOtp();
     const message = `Your verificode is ${otp}`;
-    this.sendSms(message, data.mobile);
+    await this.cacheManager.set(`otp-${data.mobile}`, {
+      otp,
+      data,
+    });
+    this.sendSms(message, '+8801830546042' || data.mobile);
+    return {
+      message: 'otp is send to the ',
+    };
   }
 
-  sendSms(message: string, mobile: string) {
+  private sendSms(message: string, mobile: string) {
     const client = new Twilio(
       this.configService.get<string>('SMS_ACCOUNT_ID'),
       this.configService.get<string>('SMS_AUTH'),
