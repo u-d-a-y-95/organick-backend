@@ -9,6 +9,7 @@ import { UserModule } from './user/user.module';
 import { SmsModule } from './sms/sms.module';
 import { CacheModule } from '@nestjs/cache-manager';
 import { DbExceptionFilter } from './db/db.exception';
+import { UtilModule } from './util/util.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { DbExceptionFilter } from './db/db.exception';
     CacheModule.register({
       isGlobal: true,
     }),
+    UtilModule,
     DbModule,
     AuthModule,
     UserModule,
