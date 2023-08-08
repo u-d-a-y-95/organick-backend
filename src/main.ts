@@ -12,6 +12,7 @@ async function bootstrap() {
   const apiConfig = new DocumentBuilder()
     .setTitle('Organick')
     .setDescription('A ecommerce site')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, apiConfig);
   SwaggerModule.setup('api', app, document);
