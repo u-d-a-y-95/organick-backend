@@ -27,3 +27,8 @@ model User {
   createAt   DateTime @default(now())
   updateAt   DateTime @updatedAt
 }
+
+model Unit {
+  id   String @id @default(cuid())
+  name String
+}
