@@ -29,6 +29,9 @@ model User {
 }
 
 model Unit {
-  id   String @id @default(cuid())
-  name String
+  id       String   @id @default(cuid())
+  name     String
+  fullName String?
+  createAt DateTime @default(now())
+  updateAt DateTime @updatedAt
 }

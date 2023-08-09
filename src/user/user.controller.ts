@@ -5,7 +5,7 @@ import { AuthGuard } from 'src/auth/auth.guard';
 
 @ApiTags('User')
 @ApiBearerAuth()
-@Controller('user')
+@Controller('users')
 @UseGuards(AuthGuard)
 export class UserController {
   constructor(private readonly userService: UserService) {}
