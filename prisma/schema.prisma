@@ -35,3 +35,12 @@ model Unit {
   createAt DateTime @default(now())
   updateAt DateTime @updatedAt
 }
+
+model Category {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  imgUrl      String?
+  createAt    DateTime @default(now())
+  updateAt    DateTime @updatedAt
+}
