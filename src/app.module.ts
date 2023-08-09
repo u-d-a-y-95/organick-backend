@@ -11,6 +11,7 @@ import { CacheModule } from '@nestjs/cache-manager';
 import { DbExceptionFilter } from './db/db.exception';
 import { UtilModule } from './util/util.module';
 import { UnitModule } from './unit/unit.module';
+import { CategoryModule } from './category/category.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { UnitModule } from './unit/unit.module';
     UserModule,
     SmsModule,
     UnitModule,
+    CategoryModule,
   ],
   controllers: [AppController],
   providers: [
