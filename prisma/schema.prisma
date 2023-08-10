@@ -29,18 +29,35 @@ model User {
 }
 
 model Unit {
-  id       String   @id @default(cuid())
+  id       String    @id @default(cuid())
   name     String
   fullName String?
-  createAt DateTime @default(now())
-  updateAt DateTime @updatedAt
+  createAt DateTime  @default(now())
+  updateAt DateTime  @updatedAt
+  Product  Product[]
 }
 
 model Category {
-  id          String   @id @default(cuid())
+  id          String    @id @default(cuid())
   name        String
   description String?
   imgUrl      String?
+  createAt    DateTime  @default(now())
+  updateAt    DateTime  @updatedAt
+  Product     Product[]
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  price       Float
+  stock       Int
+  imgUrl      String[]
+  unit        Unit     @relation(fields: [unitId], references: [id])
+  unitId      String
+  category    Category @relation(fields: [categoryId], references: [id])
+  categoryId  String
   createAt    DateTime @default(now())
   updateAt    DateTime @updatedAt
 }
