@@ -25,6 +25,8 @@ export class DbExceptionFilter implements ExceptionFilter {
         );
       case 'P2025':
         return new CustomeError('404', 'Record to delete does not exist');
+      case 'P2003':
+        return new CustomeError('409', 'Something went wrong');
       default:
         return new CustomeError(500, 'prisma eror');
     }
