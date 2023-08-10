@@ -12,6 +12,7 @@ import { DbExceptionFilter } from './db/db.exception';
 import { UtilModule } from './util/util.module';
 import { UnitModule } from './unit/unit.module';
 import { CategoryModule } from './category/category.module';
+import { ProductModule } from './product/product.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { CategoryModule } from './category/category.module';
     SmsModule,
     UnitModule,
     CategoryModule,
+    ProductModule,
   ],
   controllers: [AppController],
   providers: [
