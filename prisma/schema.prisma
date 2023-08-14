@@ -16,16 +16,46 @@ enum ROLE {
   CUSTOMER
 }
 
+enum PAYMENT_STATUS {
+  PENDING
+  DONE
+  REFUND
+}
+
+enum STATUS {
+  PLACED
+  PACKING
+  SHIPPING
+  DELIVERED
+  CANCEL
+}
+
+enum PAYMENT_GATEWAY_STATUS {
+  SUCCESS
+  FAILED
+}
+
 model User {
-  id         String   @id @default(cuid())
+  id         String    @id @default(cuid())
   name       String?
   email      String?
-  mobile     String   @unique
+  mobile     String    @unique
   password   String
-  role       ROLE     @default(CUSTOMER)
-  isVerified Boolean  @default(false)
-  createAt   DateTime @default(now())
-  updateAt   DateTime @updatedAt
+  role       ROLE      @default(CUSTOMER)
+  isVerified Boolean   @default(false)
+  createAt   DateTime  @default(now())
+  updateAt   DateTime  @updatedAt
+  Order      Order[]
+  Address    Address[]
+}
+
+model Address {
+  id       String  @id @default(cuid())
+  user     User    @relation(fields: [userId], references: [id])
+  userId   String
+  location String?
+  label    String?
+  Order    Order[]
 }
 
 model Unit {
@@ -48,16 +78,53 @@ model Category {
 }
 
 model Product {
-  id          String   @id @default(cuid())
-  name        String
-  description String?
-  price       Float
-  stock       Int
-  imgUrl      String[]
-  unit        Unit     @relation(fields: [unitId], references: [id])
-  unitId      String
-  category    Category @relation(fields: [categoryId], references: [id])
-  categoryId  String
-  createAt    DateTime @default(now())
-  updateAt    DateTime @updatedAt
+  id           String         @id @default(cuid())
+  name         String
+  description  String?
+  price        Float
+  stock        Int
+  imgUrl       String[]
+  unit         Unit           @relation(fields: [unitId], references: [id])
+  unitId       String
+  category     Category       @relation(fields: [categoryId], references: [id])
+  categoryId   String
+  createAt     DateTime       @default(now())
+  updateAt     DateTime       @updatedAt
+  OrderDetails OrderDetails[]
+}
+
+model Order {
+  id            String         @id @default(cuid())
+  user          User           @relation(fields: [userId], references: [id])
+  userId        String
+  address       Address        @relation(fields: [addressId], references: [id])
+  addressId     String
+  paymentStatus PAYMENT_STATUS @default(PENDING)
+  status        STATUS         @default(PLACED)
+  orderDate     DateTime       @default(now())
+  deliveryDate  DateTime       @default(now())
+  createAt      DateTime       @default(now())
+  updateAt      DateTime       @updatedAt
+  OrderDetails  OrderDetails[]
+  Payment       Payment[]
+}
+
+model OrderDetails {
+  id        String   @id @default(cuid())
+  order     Order    @relation(fields: [orderId], references: [id])
+  orderId   String
+  product   Product  @relation(fields: [productId], references: [id])
+  productId String
+  quantity  Int
+  price     Float
+  createAt  DateTime @default(now())
+  updateAt  DateTime @updatedAt
+}
+
+model Payment {
+  id      String                  @id @default(cuid())
+  order   Order                   @relation(fields: [orderId], references: [id])
+  orderId String
+  amount  Float
+  status  PAYMENT_GATEWAY_STATUS?
 }
